@@ -14,6 +14,7 @@ import java.sql.SQLException;
  */
 public class DatabasePipeline implements Pipeline {
 
+    //数据源，通过构造方法传过来的
     private final DataSource dataSource;
 
     public DatabasePipeline(DataSource dataSource) {
@@ -22,6 +23,7 @@ public class DatabasePipeline implements Pipeline {
 
     @Override
     public void pipeline(Page page) {
+        //避免重复
         //Poetry poetry = (Poetry) page.getDataSet().getData("poetry");
 
         //Poetry poetry = new Poetry();

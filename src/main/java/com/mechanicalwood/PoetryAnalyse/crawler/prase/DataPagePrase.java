@@ -15,6 +15,10 @@ public class DataPagePrase implements Parse{
         if (!page.isDetail()){
             return;
         }
+//        HtmlDivision domElement = (HtmlDivision) page.getHtmlPage().getElementById("contsond3ba5a3a4d29");//向下强转
+//        String divContent = domElement.asText();
+//        page.getDataSet().putData("正文", divContent);
+        //System.out.println(divContent);
 
         HtmlPage htmlPage = page.getHtmlPage();
         HtmlElement body = htmlPage.getBody();
@@ -53,6 +57,7 @@ public class DataPagePrase implements Parse{
 
 
 
+        //方便添加更多的数据，上面的代码在解析完成后就构建了一个对象
         page.getDataSet().putData("title", title);
         page.getDataSet().putData("dynasty", dynasty);
         page.getDataSet().putData("author", author);

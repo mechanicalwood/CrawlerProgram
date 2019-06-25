@@ -25,11 +25,11 @@ public class PoetryAnalyseApplication {
         //        System.out.println("hello world!");
 
         ConfigProperties configProperties = new ConfigProperties();
-//        final Page page = new Page(configProperties.getCrawlerBase(), configProperties.getCrawlerPath(), configProperties.isCrawlerDetail()
-//        );
-//        Crawler crawler = new Crawler();
-//        crawler.addParsse(new DocumentParse());
-//        crawler.addParsse(new DataPagePrase());
+        final Page page = new Page(configProperties.getCrawlerBase(), configProperties.getCrawlerPath(), configProperties.isCrawlerDetail()
+        );
+        Crawler crawler = new Crawler();
+        crawler.addParsse(new DocumentParse());
+        crawler.addParsse(new DataPagePrase());
 
 //        crawler.addPipeline(new ConsolePipeline());
 
@@ -40,12 +40,12 @@ public class PoetryAnalyseApplication {
         dataSource.setUrl(configProperties.getDbUrl());
 
 
-//        crawler.addPipeline(new DatabasePipeline(dataSource));
-//
-//        crawler.addPage(page);
-//        crawler.start();
+        crawler.addPipeline(new DatabasePipeline(dataSource));
 
-        AnalyzeDao analyzeDao = new AnalyzeDaoImpl(dataSource);
+        crawler.addPage(page);
+        crawler.start();
+
+//        AnalyzeDao analyzeDao = new AnalyzeDaoImpl(dataSource);
 //        System.out.println("test 1");
 ////        analyzeDao.analyzeAuthorCount().forEach(
 ////                authorCount -> {
@@ -59,11 +59,30 @@ public class PoetryAnalyseApplication {
 ////                }
 ////        );
 
-        AnalyzeService analyzeService = new AnalyzeServiceImpl(analyzeDao);
-        analyzeService.analyzeWordCloud().forEach(System.out::println);
+//        AnalyzeService analyzeService = new AnalyzeServiceImpl(analyzeDao);
+//        analyzeService.analyzeWordCloud().forEach(System.out::println);
     }
     public static void main(String[] args) {
-        Crawler crawler = ObjectFactory.getInstance().getObjectMap(Crawler.class);
+//        Crawler crawler = ObjectFactory.getInstance().getObjectMap(Crawler.class);
+//        crawler.start();
+        ConfigProperties configProperties = new ConfigProperties();
+        final Page page = new Page(configProperties.getCrawlerBase(), configProperties.getCrawlerPath(), configProperties.isCrawlerDetail()
+        );
+        Crawler crawler = new Crawler();
+        crawler.addParsse(new DocumentParse());
+        crawler.addParsse(new DataPagePrase());
+
+
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setUsername(configProperties.getDbUsername());
+        dataSource.setPassword(configProperties.getDbPassword());
+        dataSource.setDriverClassName(configProperties.getDbDriverClass());
+        dataSource.setUrl(configProperties.getDbUrl());
+
+
+        crawler.addPipeline(new DatabasePipeline(dataSource));
+
+        crawler.addPage(page);
         crawler.start();
     }
 }

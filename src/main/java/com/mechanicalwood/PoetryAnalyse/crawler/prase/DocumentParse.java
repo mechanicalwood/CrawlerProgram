@@ -26,25 +26,22 @@ public class DocumentParse implements Parse {
                 .getElementsByAttribute("div",
                         "class",
                         "typecont")
-                .forEach(new Consumer<HtmlElement>() {
-                    @Override
-                    public void accept(HtmlElement htmlElement) {
-                        DomNodeList<HtmlElement> nodeList = htmlElement.getElementsByTagName("a");
-                        nodeList.forEach(
-                                aNode -> {
-                                    //System.out.println(aNode.asXml());
-                                    String path = aNode.getAttribute("href");
+                .forEach(htmlElement -> {
+                    //System.out.println(htmlElement.asXml());
+                    DomNodeList<HtmlElement> nodeList = htmlElement.getElementsByTagName("a");
+                    nodeList.forEach(
+                            aNode -> {
+                                String path = aNode.getAttribute("href");
 //                                    atomicInteger.getAndIncrement();
 //                                    System.out.println(path);
-                                    Page subPage = new Page(
-                                            page.getBase(),
-                                            path,
-                                            true
-                                    );
-                                    page.getSubPage().add(subPage);
-                                }
-                        );
-                    }
+                                Page subPage = new Page(
+                                        page.getBase(),
+                                        path,
+                                        true
+                                );
+                                page.getSubPage().add(subPage);
+                            }
+                    );
                 });
 //        System.out.println("总共解析了" + atomicInteger.get() + "个地址");
     }

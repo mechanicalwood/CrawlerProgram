@@ -9,7 +9,7 @@ import com.mechanicalwood.PoetryAnalyse.crawler.common.Page;
  */
 public interface Pipeline {
     /**
-     *
+     * 清洗
      * @param page
      */
     void pipeline(Page page);

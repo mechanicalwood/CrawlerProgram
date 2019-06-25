@@ -14,6 +14,7 @@ import java.util.Map;
 public class DataSet {
 
     /**
+     * map集合（包装的数据集合）
      * data是把DOM解析、清洗之后存储的数据
      * 以下格式：
      * 标题：

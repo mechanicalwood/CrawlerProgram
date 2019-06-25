@@ -15,6 +15,6 @@ public class ConsolePipeline implements Pipeline {
         Map<String, Object> data = page.getDataSet().getData();
 
         //存储数据
-        //System.out.println(data);
+        System.out.println(data);
     }
 }

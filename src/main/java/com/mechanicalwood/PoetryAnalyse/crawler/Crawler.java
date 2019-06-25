@@ -55,6 +55,7 @@ public class Crawler {
     public Crawler(){
         this.webClient = new WebClient();
         this.webClient.getOptions().setJavaScriptEnabled(false);
+        //线程执行器
         this.executorService = Executors.newFixedThreadPool(8, new ThreadFactory() {
             private final AtomicInteger id = new AtomicInteger(0);
             @Override
@@ -179,6 +180,9 @@ public class Crawler {
         this.pipelineList.add(pipeline);
     }
 
+    /**
+     * 停止爬虫
+     */
     public void stop(){
         if (this.executorService != null && !this.executorService.isShutdown()){
             this.executorService.shutdown();
@@ -186,7 +190,7 @@ public class Crawler {
     }
 
 
-/*    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
         final Page page = new Page("https://so.gushiwen.org", "/gushi/tangshi.aspx", false
         );
         Crawler crawler = new Crawler();
@@ -195,48 +199,49 @@ public class Crawler {
         crawler.addPipeline(new ConsolePipeline());
         crawler.addPage(page);
         crawler.start();
+
 //        page.setBase("https://so.gushiwen.org");
-        //详情页面测试
+//        //详情页面测试
 //        page.setPath("/shiwenv_45c396367f59.aspx");
 //        page.setDetail(true);
-
-
-        //非详情页面测试
+//
+//
+//        //非详情页面测试
 //        page.setPath("/gushi/tangshi.aspx");
 //        page.setDetail(false);
 
-*//*        WebClient webClient = new WebClient(BrowserVersion.CHROME);
-        webClient.getOptions().setJavaScriptEnabled(false);
-        HtmlPage htmlPage = webClient.getPage(page.getUrl());
-        page.setHtmlPage(htmlPage);
+//        WebClient webClient = new WebClient(BrowserVersion.CHROME);
+//        webClient.getOptions().setJavaScriptEnabled(false);
+//        HtmlPage htmlPage = webClient.getPage(page.getUrl());
+//        page.setHtmlPage(htmlPage);
 
 
 //        Queue<Parse> detailPageList = new LinkedBlockingQueue<>();
 
-        List<Parse> parseList = new LinkedList<>();
-        parseList.add(new DocumentParse());
-        parseList.add(new DataPagePrase());
-
-        parseList.forEach(parse -> {
-            parse.parse(page);
-            if (!page.isDetail()){
-                page.getSubPage();
-            }
-        });
-        System.out.println(page.getSubPage());*//*
-
+//        List<Parse> parseList = new LinkedList<>();
+//        parseList.add(new DocumentParse());
+//        parseList.add(new DataPagePrase());
+//
+//        parseList.forEach(parse -> {
+//            parse.parse(page);
+//            if (!page.isDetail()){
+//                page.getSubPage();
+//            }
+//        });
+//        System.out.println(page.getSubPage());
+//
 //        List<Pipeline> pipelineList = new LinkedList<>();
 //        pipelineList.add(new ConsolePipeline());
-
+//
 //        Parse parse = new DataPagePrase();
 //        parse.parse(page);
-//
-//
+
+
 //        Pipeline pipeline = new ConsolePipeline();
 //        pipeline.pipeline(page);
 
 //        Parse parse = new DocumentParse();
 //        parse.parse(page);
 
-    }*/
+    }
 }
