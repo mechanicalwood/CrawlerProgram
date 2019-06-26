@@ -27,7 +27,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     @Override
     public List<AuthorCount> analyzeAuthorCount() {
         /**
-         * 此处结果为排序
+         * 此处结果可进行排序
          * 1）DAO层SQL排序
          * 2）Service层进行数据排序
          */
@@ -63,15 +63,17 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             String content = poetry.getContent();
             terms.addAll(NlpAnalysis.parse(title).getTerms());
             terms.addAll(NlpAnalysis.parse(content).getTerms());
-            //ArrayList是并发进行修改的，不能用for循环就行修改和删除，所以需要使用迭代器
+            //ArrayList是并发进行修改的，不能用for循环就行过滤和删除，所以需要使用迭代器
             Iterator<Term> iterator = terms.iterator();
             while (iterator.hasNext()){
                 Term term = iterator.next();
                 //词性过滤
                 if (term.getNatureStr() == null || term.getNatureStr().equals("w")){
                     iterator.remove();
+                    //迭代器移除后要进行continue
                     continue;
                 }
+                //长度过滤
                 if (term.getName().length() < 2){
                     iterator.remove();
                     continue;
@@ -87,11 +89,13 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 map.put(realName, count);
             }
         }
+        //将Map转化为List
         List<WordCount> wordCounts = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : map.entrySet()){
             WordCount wordCount = new WordCount();
             wordCount.setCount(entry.getValue());
             wordCount.setWord(entry.getKey());
+            //添加到集合中去
             wordCounts.add(wordCount);
         }
         return wordCounts;

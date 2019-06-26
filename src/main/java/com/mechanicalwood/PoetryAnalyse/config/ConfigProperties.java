@@ -21,13 +21,15 @@ public class ConfigProperties {
     private String dbUrl;
     private String dbDriverClass;
 
+    private boolean enableConsole;
+
     public ConfigProperties(){
         //从外部文件加载
         InputStream inputStream = ConfigProperties.class.getClassLoader().getResourceAsStream("config.properties");
         Properties p = new Properties();
         try {
             p.load(inputStream);
-            System.out.println(p);
+//            System.out.println(p);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,6 +44,7 @@ public class ConfigProperties {
         this.dbUrl = String.valueOf(p.get("db.url"));
         this.dbDriverClass = String.valueOf(p.get("db.driver_class"));
 
+        this.enableConsole = Boolean.valueOf(String.valueOf(p.getProperty("config.enable_console", "false")));
 
     }
 

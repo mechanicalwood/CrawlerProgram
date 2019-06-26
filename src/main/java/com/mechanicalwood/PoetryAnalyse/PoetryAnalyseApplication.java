@@ -12,8 +12,14 @@ import com.mechanicalwood.PoetryAnalyse.crawler.common.Page;
 import com.mechanicalwood.PoetryAnalyse.crawler.pipeline.DatabasePipeline;
 import com.mechanicalwood.PoetryAnalyse.crawler.prase.DataPagePrase;
 import com.mechanicalwood.PoetryAnalyse.crawler.prase.DocumentParse;
+import com.mechanicalwood.PoetryAnalyse.web.WebController;
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import spark.Spark;
 
 import javax.sql.DataSource;
+import static spark.route.HttpMethod.get;
 
 /**
  * 唐诗分析的主类
@@ -62,27 +68,58 @@ public class PoetryAnalyseApplication {
 //        AnalyzeService analyzeService = new AnalyzeServiceImpl(analyzeDao);
 //        analyzeService.analyzeWordCloud().forEach(System.out::println);
     }
-    public static void main(String[] args) {
-//        Crawler crawler = ObjectFactory.getInstance().getObjectMap(Crawler.class);
-//        crawler.start();
+
+    /**
+     * 用于从数据库查询每个作者创作数量的升序打印
+     */
+    public void code2(){
         ConfigProperties configProperties = new ConfigProperties();
-        final Page page = new Page(configProperties.getCrawlerBase(), configProperties.getCrawlerPath(), configProperties.isCrawlerDetail()
-        );
-        Crawler crawler = new Crawler();
-        crawler.addParsse(new DocumentParse());
-        crawler.addParsse(new DataPagePrase());
-
-
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setUsername(configProperties.getDbUsername());
         dataSource.setPassword(configProperties.getDbPassword());
         dataSource.setDriverClassName(configProperties.getDbDriverClass());
         dataSource.setUrl(configProperties.getDbUrl());
 
+        AnalyzeDao analyzeDao = new AnalyzeDaoImpl(dataSource);
 
-        crawler.addPipeline(new DatabasePipeline(dataSource));
+        AnalyzeService analyzeService = new AnalyzeServiceImpl(analyzeDao);
+        analyzeService.analyzeAuthorCount().forEach(System.out::println);
+    }
 
-        crawler.addPage(page);
+    /**
+     * 打印分词结果
+     */
+    public void code3(){
+        ConfigProperties configProperties = new ConfigProperties();
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setUsername(configProperties.getDbUsername());
+        dataSource.setPassword(configProperties.getDbPassword());
+        dataSource.setDriverClassName(configProperties.getDbDriverClass());
+        dataSource.setUrl(configProperties.getDbUrl());
+
+        AnalyzeDao analyzeDao = new AnalyzeDaoImpl(dataSource);
+
+        AnalyzeService analyzeService = new AnalyzeServiceImpl(analyzeDao);
+        analyzeService.analyzeWordCloud().forEach(System.out::println);
+    }
+
+    /**
+     * 用对象工厂启动爬虫
+     */
+    public void code4(){
+        Crawler crawler = ObjectFactory.getInstance().getObjectMap(Crawler.class);
         crawler.start();
+    }
+
+    public void code5(){
+        //动态web服务器（演示）
+        Spark.get("/hello", (req, resp) -> {
+            return "hello Spark Java";
+        });
+    }
+    public static void main(String[] args) {
+        WebController webController = ObjectFactory.getInstance().getObjectMap(WebController.class);
+        //运行了wen服务，提供接口
+        webController.launch();
     }
 }

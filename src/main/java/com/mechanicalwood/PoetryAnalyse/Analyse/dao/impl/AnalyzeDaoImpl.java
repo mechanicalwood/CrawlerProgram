@@ -18,6 +18,7 @@ import java.util.List;
  */
 public class AnalyzeDaoImpl implements AnalyzeDao {
 
+    //数据源
     private final DataSource dataSource;
 
     public AnalyzeDaoImpl(DataSource dataSource) {
