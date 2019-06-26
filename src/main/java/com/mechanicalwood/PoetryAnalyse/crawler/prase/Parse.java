@@ -11,5 +11,5 @@ public interface Parse {
      * 解析页面
      * @param page
      */
-    void parse(Page page);//解析页面
+    void parse(final Page page);//解析页面
 }

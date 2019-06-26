@@ -11,7 +11,7 @@ import com.mechanicalwood.PoetryAnalyse.crawler.common.Page;
  */
 public class DataPagePrase implements Parse{
     @Override
-    public void parse(Page page) {
+    public void parse(final Page page) {
         if (!page.isDetail()){
             return;
         }

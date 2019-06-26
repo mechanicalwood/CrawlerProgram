@@ -6,6 +6,9 @@ import lombok.Data;
  */
 @Data
 public class Poetry {
+    /**
+     * 标题、作者、朝代、正文
+     */
     private String title;
     private String dynasty;
     private String author;

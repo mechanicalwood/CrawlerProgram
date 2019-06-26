@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  */
 public class DocumentParse implements Parse {
     @Override
-    public void parse(Page page) {
+    public void parse(final Page page) {
         if (page.isDetail()) {
             return;
 

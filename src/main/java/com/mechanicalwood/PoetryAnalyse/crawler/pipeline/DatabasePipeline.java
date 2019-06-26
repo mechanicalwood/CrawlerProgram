@@ -1,6 +1,8 @@
 package com.mechanicalwood.PoetryAnalyse.crawler.pipeline;
 
 import com.mechanicalwood.PoetryAnalyse.crawler.common.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 import javax.sql.DataSource;
@@ -13,6 +15,7 @@ import java.sql.SQLException;
  * Data: 2019/4/26 21:40
  */
 public class DatabasePipeline implements Pipeline {
+    private final Logger LOGGER = LoggerFactory.getLogger(DatabasePipeline.class);
 
     //数据源，通过构造方法传过来的
     private final DataSource dataSource;
@@ -56,7 +59,7 @@ public class DatabasePipeline implements Pipeline {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Database insert occur exception {}.", e.getMessage());
         }
     }
 }

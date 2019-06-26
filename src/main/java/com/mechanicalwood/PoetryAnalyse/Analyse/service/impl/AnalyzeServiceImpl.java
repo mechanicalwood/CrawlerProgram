@@ -80,7 +80,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 }
                 //统计
                 String realName = term.getRealName();
-                Integer count = 0;
+                Integer count;
                 if (map.containsKey(realName)){
                     count = map.get(realName) + 1;
                 }else {

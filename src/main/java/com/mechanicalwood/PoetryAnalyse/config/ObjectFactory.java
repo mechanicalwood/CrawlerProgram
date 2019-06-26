@@ -12,10 +12,13 @@ import com.mechanicalwood.PoetryAnalyse.crawler.pipeline.DatabasePipeline;
 import com.mechanicalwood.PoetryAnalyse.crawler.prase.DataPagePrase;
 import com.mechanicalwood.PoetryAnalyse.crawler.prase.DocumentParse;
 import com.mechanicalwood.PoetryAnalyse.web.WebController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
+
 
 /**
  * Author: MechanicalWood
@@ -23,6 +26,8 @@ import java.util.Map;
  */
 public final class ObjectFactory {
     private static final ObjectFactory instance = new ObjectFactory();
+
+    private final Logger LOGGER = LoggerFactory.getLogger(ObjectFactory.class);
     private final Map<Class, Object> objectHashMap = new HashMap<>();
     private ObjectFactory(){
         initConfigProperties();
@@ -80,6 +85,8 @@ public final class ObjectFactory {
     private void initConfigProperties() {
         ConfigProperties configProperties = new ConfigProperties();
         objectHashMap.put(ConfigProperties.class, configProperties);
+
+        LOGGER.info("ConfigProperties info:\n{}", configProperties.toString());
     }
 
     public <T> T getObjectMap(Class classz) {
@@ -94,10 +101,10 @@ public final class ObjectFactory {
     }
 
     public void printObjectList(){
-        System.out.println("========= ObjectFactory List =========");
+        LOGGER.info("========= ObjectFactory List =========");
         for (Map.Entry<Class, Object> entry : objectHashMap.entrySet()){
-            System.out.println(String.format("\t[%s] ==> [%s]", entry.getKey().getCanonicalName(), entry.getValue().getClass().getCanonicalName()));
+            LOGGER.info(String.format("\t[%s] ==> [%s]", entry.getKey().getCanonicalName(), entry.getValue().getClass().getCanonicalName()));
         }
-        System.out.println("======================================");
+        LOGGER.info("======================================");
     }
 }

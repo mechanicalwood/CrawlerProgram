@@ -9,6 +9,8 @@ import com.mechanicalwood.PoetryAnalyse.crawler.pipeline.Pipeline;
 import com.mechanicalwood.PoetryAnalyse.crawler.prase.DataPagePrase;
 import com.mechanicalwood.PoetryAnalyse.crawler.prase.DocumentParse;
 import com.mechanicalwood.PoetryAnalyse.crawler.prase.Parse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -26,6 +28,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Data: 2019/3/17 16:38
  */
 public class Crawler {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Crawler.class);
+
     /**
      * 放置文档页面
      */
@@ -97,7 +101,8 @@ public class Crawler {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                //将异常写入到日志中去
+                LOGGER.error("Parse occur exception {}.", e.getMessage());
             }
             final Page page = this.docQueue.poll();
             if (page == null){
@@ -135,7 +140,7 @@ public class Crawler {
                             }
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        LOGGER.error("Parse task occur exception {}.", e.getMessage());
                     }
                 }
             });
@@ -149,7 +154,7 @@ public class Crawler {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOGGER.error("Parse occur exception {}.", e.getMessage());
             }
 
             final Page page = this.detailQueue.poll();
@@ -187,6 +192,7 @@ public class Crawler {
         if (this.executorService != null && !this.executorService.isShutdown()){
             this.executorService.shutdown();
         }
+        LOGGER.info("Crawler stopped...");
     }
 
 

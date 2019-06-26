@@ -13,6 +13,8 @@ import com.mechanicalwood.PoetryAnalyse.crawler.pipeline.DatabasePipeline;
 import com.mechanicalwood.PoetryAnalyse.crawler.prase.DataPagePrase;
 import com.mechanicalwood.PoetryAnalyse.crawler.prase.DocumentParse;
 import com.mechanicalwood.PoetryAnalyse.web.WebController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -117,9 +119,18 @@ public class PoetryAnalyseApplication {
             return "hello Spark Java";
         });
     }
+    private static final Logger LOGGER = LoggerFactory.getLogger(PoetryAnalyseApplication.class);
+
     public static void main(String[] args) {
         WebController webController = ObjectFactory.getInstance().getObjectMap(WebController.class);
         //运行了wen服务，提供接口
+        LOGGER.info("Web Server launch...");
         webController.launch();
+
+        if (args.length == 1 && args[0].equals("run-crawler")){
+            Crawler crawler = ObjectFactory.getInstance().getObjectMap(Crawler.class);
+            LOGGER.info("Crawler started...");
+            crawler.start();
+        }
     }
 }

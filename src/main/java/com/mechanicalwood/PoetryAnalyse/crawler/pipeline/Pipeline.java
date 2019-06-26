@@ -12,5 +12,5 @@ public interface Pipeline {
      * 清洗
      * @param page
      */
-    void pipeline(Page page);
+    void pipeline(final Page page);
 }

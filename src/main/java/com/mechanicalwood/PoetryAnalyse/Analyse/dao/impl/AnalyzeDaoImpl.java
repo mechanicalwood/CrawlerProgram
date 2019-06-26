@@ -3,6 +3,8 @@ package com.mechanicalwood.PoetryAnalyse.Analyse.dao.impl;
 import com.mechanicalwood.PoetryAnalyse.Analyse.dao.AnalyzeDao;
 import com.mechanicalwood.PoetryAnalyse.Analyse.entity.Poetry;
 import com.mechanicalwood.PoetryAnalyse.Analyse.model.AuthorCount;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -17,6 +19,7 @@ import java.util.List;
  * Data: 2019/5/14 11:23
  */
 public class AnalyzeDaoImpl implements AnalyzeDao {
+    private final Logger LOGGER = LoggerFactory.getLogger(AnalyzeDaoImpl.class);
 
     //数据源
     private final DataSource dataSource;
@@ -41,7 +44,7 @@ public class AnalyzeDaoImpl implements AnalyzeDao {
             }
         } catch (SQLException e) {
 
-            e.printStackTrace();
+            LOGGER.error("Database query occur exception{}.", e.getMessage());
         }
         return datas;
     }
@@ -67,7 +70,7 @@ public class AnalyzeDaoImpl implements AnalyzeDao {
             }
         } catch (SQLException e) {
 
-            e.printStackTrace();
+            LOGGER.error("Database query occur exception{}.", e.getMessage());
         }
         return datas;
     }

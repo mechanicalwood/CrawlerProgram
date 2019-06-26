@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.mechanicalwood.PoetryAnalyse.Analyse.model.AuthorCount;
 import com.mechanicalwood.PoetryAnalyse.Analyse.model.WordCount;
 import com.mechanicalwood.PoetryAnalyse.Analyse.service.AnalyzeService;
+import com.mechanicalwood.PoetryAnalyse.config.ObjectFactory;
+import com.mechanicalwood.PoetryAnalyse.crawler.Crawler;
 import spark.ResponseTransformer;
 import spark.Spark;
 
@@ -22,11 +24,11 @@ public class WebController {
     }
 
 
-    public List<AuthorCount> analyzeAuthorCount(){
+    private List<AuthorCount> analyzeAuthorCount(){
         return analyzeService.analyzeAuthorCount();
     }
 
-    public List<WordCount> analyzeWordCloud(){
+    private List<WordCount> analyzeWordCloud(){
         return analyzeService.analyzeWordCloud();
     }
 
@@ -34,9 +36,19 @@ public class WebController {
     public void launch(){
         ResponseTransformer transformer = new JSONResponseTreansformer();
         //src/main/resources/static
+        //前端静态文件的目录
         Spark.staticFileLocation("/static");
+
+        //服务端接口
         Spark.get("/analyze/author_count", ((request, response) -> analyzeAuthorCount()), transformer);
         Spark.get("/analyze/word_cloud", ((request, response) -> analyzeWordCloud()), transformer);
+
+        //停止爬虫
+        Spark.get("/crawler/stop", ((request, response) -> {
+            Crawler crawler = ObjectFactory.getInstance().getObjectMap(Crawler.class);
+            crawler.stop();
+            return "爬虫停止";
+        }));
     }
 
 
